@@ -9,6 +9,7 @@ A modern, responsive web application to track your income and expenses with beau
 - **📋 Transaction List** - View all transactions with filtering options
 - **🔍 Advanced Search** - Filter transactions by category, type, and date range
 - **💳 Analytics** - Track your spending patterns and financial insights
+- **📈 Chart Images** - Generate bar, line, and pie charts from stored transactions
 - **📱 Responsive Design** - Works seamlessly on desktop, tablet, and mobile devices
 - **🎨 Modern UI** - Beautiful gradient design with intuitive navigation
 
@@ -19,6 +20,7 @@ A modern, responsive web application to track your income and expenses with beau
 - Python 3.7+
 - Flask
 - SQLite3
+- matplotlib
 
 ### Installation
 
@@ -50,14 +52,14 @@ personal-finance-analyzer/
 ├── database.py            # Database operations and functions
 ├── analysis.py            # Financial analysis functions
 ├── requirements.txt       # Python dependencies
-├── finance.db             # SQLite database (auto-generated)
+├── finance.db             # SQLite database (auto-generated, not committed)
 ├── templates/             # HTML templates
 │   ├── index.html         # Homepage
 │   ├── add_transaction.html
 │   ├── transactions.html
 │   ├── search.html
 │   └── dashboard.html
-└── static/                # Static files (CSS, JavaScript, images)
+└── static/                # Generated chart images and static files
 ```
 
 ## 💻 How to Use
@@ -92,9 +94,10 @@ personal-finance-analyzer/
    - Net Balance
    - Transaction Count
 2. See detailed analytics including:
-   - Category breakdown
-   - Monthly summary
+   - Top spending categories
+   - Monthly income, expenses, and net balance
    - Average transaction values
+3. View generated PNG charts including spending by category, monthly trends, income vs expenses, expense distribution, net savings, and transaction counts
 
 ### 5. Loading Sample Data
 - Click "Load Sample Data" on the homepage to populate the database with example transactions
@@ -141,6 +144,7 @@ CREATE TABLE transactions (
 
 - **Backend**: Flask (Python web framework)
 - **Database**: SQLite3
+- **Charts**: Matplotlib
 - **Frontend**: HTML5, CSS3 (modern grid and flexbox)
 - **Design**: Responsive design with gradient backgrounds
 
@@ -189,7 +193,6 @@ Ensure the `templates/` folder exists and contains all HTML files in the correct
 
 ## 📝 Future Enhancements
 
-- 📈 Charts and graphs visualization
 - 🔐 User authentication and accounts
 - 📧 Email reports and notifications
 - 📱 Mobile app
