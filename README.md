@@ -62,6 +62,8 @@ personal-finance-analyzer/
 └── static/                # Generated chart images and static files
 ```
 
+Note: `finance.db` and generated chart PNG files are created locally when the app runs. They are intentionally not committed to GitHub.
+
 ## 💻 How to Use
 
 ### 1. Adding a Transaction
