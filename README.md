@@ -206,7 +206,7 @@ Ensure the `templates/` folder exists and contains all HTML files in the correct
 This project is open source and available for educational purposes.
 
 ## 👤 Author
-Hetav Vyas 
+Hetav Vyas,
 Vanshika Hardik Shah
 
 Personal Finance Analyzer - Created for easy financial tracking and analysis.
