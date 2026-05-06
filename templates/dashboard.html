@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            border-radius: 10px;
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 6px;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+            background: #f0f0f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h3 {
+            color: #666;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .card.income {
+            border-left-color: #10b981;
+        }
+
+        .card.income p {
+            color: #10b981;
+        }
+
+        .card.expense {
+            border-left-color: #ef4444;
+        }
+
+        .card.expense p {
+            color: #ef4444;
+        }
+
+        .card.balance {
+            border-left-color: #667eea;
+        }
+
+        .card.balance p {
+            color: #667eea;
+        }
+
+        .card.transactions {
+            border-left-color: #f59e0b;
+        }
+
+        .card.transactions p {
+            color: #f59e0b;
+        }
+
+        .charts {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 35px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .analytics-card,
+        .chart-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .analytics-card h3,
+        .chart-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .analytics-subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .spending-list {
+            display: grid;
+            gap: 16px;
+        }
+
+        .spending-row {
+            display: grid;
+            gap: 8px;
+        }
+
+        .spending-header,
+        .monthly-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .spending-rank {
+            background: #667eea;
+            color: white;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            margin-right: 10px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .spending-category {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .spending-amount {
+            color: #ef4444;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .spending-bar {
+            background: #e5e7eb;
+            border-radius: 999px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .spending-fill {
+            background: linear-gradient(90deg, #ef4444, #f59e0b);
+            border-radius: inherit;
+            height: 100%;
+            min-width: 4px;
+        }
+
+        .monthly-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .monthly-row {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 14px;
+        }
+
+        .monthly-month {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .monthly-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 12px;
+            font-size: 13px;
+        }
+
+        .metric-income {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .metric-expense {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .metric-net {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .chart-card img {
+            max-width: 100%;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+
+        .chart-images {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .chart-image-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .chart-image-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .chart-image-card img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .no-chart {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            color: #666;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-chart p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .data-summary {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-item strong {
+            color: #333;
+        }
+
+        .summary-value {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-card {
+                padding: 15px;
+            }
+
+            .analytics-grid,
+            .chart-image-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .monthly-row,
+            .spending-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .monthly-metrics {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="brand">💰 FinanceTracker</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/add">Add Transaction</a></li>
+                <li><a href="/transactions">Transactions</a></li>
+                <li><a href="/search">Search</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>📈 Finance Dashboard</h1>
+
+        <div class="cards">
+            <div class="card income">
+                <h3>💰 Total Income</h3>
+                <p>${{ "%.2f"|format(summary.total_income) }}</p>
+            </div>
+
+            <div class="card expense">
+                <h3>💸 Total Expenses</h3>
+                <p>${{ "%.2f"|format(summary.total_expenses) }}</p>
+            </div>
+
+            <div class="card balance">
+                <h3>💳 Net Balance</h3>
+                <p>${{ "%.2f"|format(summary.net_balance) }}</p>
+            </div>
+
+            <div class="card transactions">
+                <h3>📊 Total Transactions</h3>
+                <p>{{ summary.transaction_count }}</p>
+            </div>
+        </div>
+
+        {% if summary.transaction_count > 0 %}
+            <div class="data-summary">
+                <h2>📋 Summary Details</h2>
+                <div class="summary-item">
+                    <strong>Highest Expense Category:</strong>
+                    <span class="summary-value">{{ summary.highest_expense_category }}</span>
+                </div>
+                <div class="summary-item">
+                    <strong>Total Transactions:</strong>
+                    <span class="summary-value">{{ summary.transaction_count }}</span>
+                </div>
+                <div class="summary-item">
+                    <strong>Average Income per Transaction:</strong>
+                    <span class="summary-value">
+                        {% if summary.total_income > 0 and summary.transaction_count > 0 %}
+                            ${{ "%.2f"|format(summary.total_income / summary.transaction_count) }}
+                        {% else %}
+                            $0.00
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="summary-item">
+                    <strong>Average Expense per Transaction:</strong>
+                    <span class="summary-value">
+                        {% if summary.total_expenses > 0 and summary.transaction_count > 0 %}
+                            ${{ "%.2f"|format(summary.total_expenses / summary.transaction_count) }}
+                        {% else %}
+                            $0.00
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <div class="charts">
+                <h2>📊 Analytics</h2>
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>Top Spending Categories</h3>
+                        <p class="analytics-subtitle">Your five largest expense areas.</p>
+                        <div class="spending-list">
+                            {% for item in charts.top_expense_categories %}
+                                <div class="spending-row">
+                                    <div class="spending-header">
+                                        <span class="spending-category">
+                                            <span class="spending-rank">{{ loop.index }}</span>{{ item.category }}
+                                        </span>
+                                        <span class="spending-amount">${{ "%.2f"|format(item.amount) }}</span>
+                                    </div>
+                                    <div class="spending-bar">
+                                        <div class="spending-fill" style="width: {{ "%.1f"|format(item.percent) }}%;"></div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3>Monthly Snapshot</h3>
+                        <p class="analytics-subtitle">Income, expenses, and net balance by month.</p>
+                        <div class="monthly-list">
+                            {% for month in charts.monthly_summary %}
+                                <div class="monthly-row">
+                                    <span class="monthly-month">{{ month.month }}</span>
+                                    <span class="monthly-metrics">
+                                        <span class="metric-income">Income ${{ "%.2f"|format(month.income) }}</span>
+                                        <span class="metric-expense">Expenses ${{ "%.2f"|format(month.expense) }}</span>
+                                        <span class="metric-net">Net ${{ "%.2f"|format(month.net) }}</span>
+                                    </span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-images">
+                <h2>Chart Images</h2>
+                <div class="chart-image-grid">
+                    {% for chart_image in chart_images %}
+                        <div class="chart-image-card">
+                            <h3>{{ chart_image.title }}</h3>
+                            <img
+                                src="{{ url_for('static', filename=chart_image.filename) }}"
+                                alt="{{ chart_image.alt }}"
+                            >
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="no-chart">
+                <p>📭 No data available yet!</p>
+                <p>Start by adding transactions or loading sample data to see your analytics.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            border-radius: 10px;
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 6px;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+            background: #f0f0f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+
+        .filter-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-box form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .clear-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 0;
+        }
+
+        .clear-link:hover {
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 16px 18px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .income {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .expense {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .delete-form {
+            display: inline;
+        }
+
+        .delete-button {
+            background: #ef4444;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            box-shadow: none;
+        }
+
+        .delete-button:hover {
+            background: #dc2626;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .no-data {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            color: #666;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-data p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .filter-box form {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="brand">💰 FinanceTracker</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/add">Add Transaction</a></li>
+                <li><a href="/transactions">Transactions</a></li>
+                <li><a href="/search">Search</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category_msg, message in messages %}
+                    <div class="{{ category_msg }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h1>📊 All Transactions</h1>
+
+        <div class="filter-box">
+            <form method="GET" action="/transactions">
+                <div>
+                    <label>Category</label>
+                    <input type="text" name="category" value="{{ category }}" placeholder="e.g., Groceries">
+                </div>
+
+                <div>
+                    <label>Type</label>
+                    <select name="transaction_type">
+                        <option value="">All Types</option>
+                        <option value="income" {% if transaction_type == "income" %}selected{% endif %}>💰 Income</option>
+                        <option value="expense" {% if transaction_type == "expense" %}selected{% endif %}>💸 Expense</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Month</label>
+                    <input type="month" name="month" value="{{ month }}">
+                </div>
+
+                <div>
+                    <button type="submit">🔍 Filter</button>
+                </div>
+            </form>
+
+            <a class="clear-link" href="/transactions">✖️ Clear Filters</a>
+        </div>
+
+        {% if transactions %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                        <tr>
+                            <td>{{ transaction.date }}</td>
+                            <td><strong>${{ "%.2f"|format(transaction.amount) }}</strong></td>
+                            <td>{{ transaction.category }}</td>
+                            <td>{{ transaction.description or "—" }}</td>
+                            <td>
+                                <span class="{{ transaction.transaction_type }}">
+                                    {% if transaction.transaction_type == "income" %}💰{% else %}💸{% endif %} {{ transaction.transaction_type.title() }}
+                                </span>
+                            </td>
+                            <td>
+                                <form method="POST" action="/delete/{{ transaction.id }}" class="delete-form">
+                                    <button type="submit" class="delete-button" onclick="return confirm('Are you sure?');">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="no-data">
+                <p>📭 No transactions found.</p>
+                <p>Start by adding a transaction or loading sample data.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
